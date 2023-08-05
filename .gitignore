@@ -3,3 +3,5 @@ env/
 myenv/
 /venv
 Assets/
+.ipynb_checkpoints/
+AutoMateTags.ipynb
