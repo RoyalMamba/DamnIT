@@ -7,3 +7,4 @@ Assets/
 AutoMateTags.ipynb
 *.env
 *.ipynb
+*.log
