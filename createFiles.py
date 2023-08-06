@@ -2,7 +2,7 @@ import os
 from openpyxl import Workbook
 
 
-files = os.listdir(r'Assets/Amit Shah')
+files = os.listdir(r'Assets\Anthony Albanese')
 files = sorted(files)
 workbook = Workbook()
 sheet = workbook.active

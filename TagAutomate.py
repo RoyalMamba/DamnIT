@@ -6,26 +6,34 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException, StaleElementReferenceException
-
-
+from dotenv import load_dotenv
 import time
 import openpyxl
+import os
+
 
 workbook = openpyxl.load_workbook('Files_and_Tags.xlsx')
 sheet = workbook.active
 filesNtags = [filename for filename in sheet.iter_rows(values_only=True, min_row=2)]
-
+load_dotenv()
 try:
+    website_url = "https://stg.tagsmarter.com/auth/login"
+    # user_email = input("Enter the EMAIL of the user:    ")
+    # user_password = input("Enter the PASSWORD of the user: ")
+
+
+    # folder_name = input("Enter the name of the FOLDER:  ")
+    # eventName = input("Enter the name of the EVENT:   ")
+
+
+    user_email = os.getenv('EMAIL')
+    user_password= os.getenv('PASSWORD')
+    folder_name = os.getenv('FOLDER_NAME')
+    eventName = os.getenv('EVENT_NAME')
+
     driver = webdriver.Chrome()
 
     # Website URL and login credentials
-    website_url = "https://stg.tagsmarter.com/auth/login"
-    user_email = input("Enter the EMAIL of the user:    ")
-    user_password = input("Enter the PASSWORD of the user: ")
-
-
-    folder_name = input("Enter the name of the FOLDER:  ")
-    eventName = input("Enter the name of the EVENT:   ")
 
 
     # Navigate to the login page
@@ -49,18 +57,18 @@ try:
     folder_element = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, f"//span[@class='item-folder-name' and text()='{folder_name}']")))
     folder_element.click()
     # Wait for assets to load
-    time.sleep(1)
+    # time.sleep(1)
 
-    for totalTagged, iterfiles in enumerate(filesNtags):
+    for totalTagged, iterfiles in enumerate(filesNtags,start=1):
         try:
             imageName = iterfiles[0]
 
             #Change the size of the page to 1000 assets 
-            if totalTagged > 49 : 
+            if totalTagged > 48 : 
                 pageSize = WebDriverWait(driver,20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="nav-home"]//app-assets-master//p-dropdown')))
                 driver.execute_script("window.scrollTo({top: 0, behavior: 'instant'});")
                 pageSize.click()
-                pageOptions = WebDriverWait(driver,10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.p-dropdown-items li")))
+                pageOptions = WebDriverWait(driver  ,10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.p-dropdown-items li")))
                 for page in pageOptions:
                     if page.text == '1000':
                         page.click()
@@ -130,7 +138,7 @@ try:
             approveButton = WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, "//button[contains(text(), 'Approve')]")))
             approveButton.click()
             print(f'Finished Tagging {totalTagged} Assets !')
-            time.sleep(3)
+            # time.sleep(4)
 
         
         except ElementClickInterceptedException as e:

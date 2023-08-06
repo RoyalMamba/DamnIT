@@ -5,3 +5,5 @@ myenv/
 Assets/
 .ipynb_checkpoints/
 AutoMateTags.ipynb
+*.env
+*.ipynb
