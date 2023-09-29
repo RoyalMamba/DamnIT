@@ -8,3 +8,8 @@ AutoMateTags.ipynb
 *.env
 *.ipynb
 *.log
+generate images/
+*.zip
+*.7z
+*.pyc
+__pycache__/
